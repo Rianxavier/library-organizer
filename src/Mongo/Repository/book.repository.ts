@@ -14,4 +14,13 @@ export class BookRepository {
 
     return result.toObject() as BookDTO;
   }
+
+  async getAllBooks(): Promise<BookDTO[]> {
+    const allBooks = await this.bookModel
+      .find({}, { _v: false })
+      .sort({ name: +1 })
+      .exec();
+
+    return allBooks;
+  }
 }

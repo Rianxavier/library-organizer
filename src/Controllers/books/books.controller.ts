@@ -7,8 +7,8 @@ export class BooksController {
   constructor(private readonly bookService: BooksService) {}
 
   @Get()
-  getAllBooks(): string {
-    return 'Todos os livros então aqui';
+  async getAllBooks(): Promise<BookDTO[]> {
+    return await this.bookService.getAllBooks();
   }
 
   @Post()
