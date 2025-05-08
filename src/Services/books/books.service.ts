@@ -45,6 +45,15 @@ export class BooksService {
     return foundBooks;
   }
 
+  async getBookByName(bookName: string): Promise<Book[]> {
+    const foundBooks = await this.bookRepository.getBookByName(bookName);
+
+    if (!foundBooks.length)
+      throw new BadRequestException('No results for this name');
+
+    return foundBooks;
+  }
+
   async deleteBook(bookId: string): Promise<Book> {
     try {
       const book = await this.bookRepository.deleteBook(bookId);

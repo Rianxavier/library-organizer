@@ -40,6 +40,12 @@ export class BookRepository {
     });
   }
 
+  async getBookByName(bookName: string): Promise<Book[]> {
+    return await this.bookModel.find({
+      name: { $regex: bookName, $options: 'i' },
+    });
+  }
+
   async deleteBook(bookId: string): Promise<Book> {
     const book = await this.bookModel.findOneAndDelete({ _id: bookId });
     if (!book) throw new Error('Book not found');

@@ -32,6 +32,11 @@ export class BooksController {
     return await this.bookService.getBookByAuthorName(authorName);
   }
 
+  @Get('name/:bookName')
+  async getBookByName(@Param('bookName') bookName: string): Promise<Book[]> {
+    return await this.bookService.getBookByName(bookName);
+  }
+
   @Post()
   async saveBook(@Body() newBook: BookDTO): Promise<Book> {
     return await this.bookService.saveBook(newBook);
