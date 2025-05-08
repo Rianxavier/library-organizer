@@ -22,10 +22,47 @@ export class BooksService {
 
   async getBookById(bookId: string): Promise<Book> {
     try {
-      return await this.bookRepository.getBookById(bookId);
+      const book = await this.bookRepository.getBookById(bookId);
+
+      if (!book) throw new BadRequestException('This book does not exists');
+
+      return book;
     } catch (error) {
       console.error('Error fetching book:', error);
       throw new BadRequestException('There are no results');
     }
+  }
+
+  async getBookByAuthorName(authorName: string): Promise<Book[]> {
+    const splitedAuthorName = authorName.split(' ');
+
+    const foundBooks =
+      await this.bookRepository.getBookByAuthorName(splitedAuthorName);
+
+    if (!foundBooks.length)
+      throw new BadRequestException('No results for this author');
+
+    return foundBooks;
+  }
+
+  async deleteBook(bookId: string): Promise<Book> {
+    try {
+      const book = await this.bookRepository.deleteBook(bookId);
+
+      if (!book) throw new BadRequestException('This book does not exists');
+
+      return book;
+    } catch (error) {
+      console.error('Error fetching book:', error);
+      throw new BadRequestException('This book does not exists');
+    }
+  }
+
+  async updateBook(bookId: string, newBook: BookDTO): Promise<Book> {
+    const book = await this.bookRepository.getBookById(bookId);
+
+    if (!book) throw new BadRequestException('This book does not exists');
+
+    return await this.bookRepository.updateBook(bookId, newBook);
   }
 }
